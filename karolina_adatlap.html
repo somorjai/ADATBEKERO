@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Karolina Iskola – Adatlap</title>
+<style>
+  @page { size: A4; margin: 14mm 15mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #e9edf2; color: #111; font-family: Arial, Helvetica, sans-serif; font-size: 11pt; }
+  .toolbar { position: sticky; top: 0; z-index: 5; padding: 12px; background: #17365d; color: white; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  button { border: 0; border-radius: 5px; padding: 9px 14px; cursor: pointer; font-weight: bold; }
+  .primary { background: #2e75b6; color: white; }
+  .secondary { background: white; color: #17365d; }
+  .status { margin-left: auto; font-size: 0.9em; }
+  main { width: 210mm; min-height: 297mm; margin: 18px auto; padding: 14mm 15mm; background: white; box-shadow: 0 0 8px #999; }
+  h1, h2 { text-align: center; margin: 0; }
+  h1 { font-size: 17pt; letter-spacing: .3px; }
+  h2 { font-size: 15pt; margin-top: 5px; margin-bottom: 16px; }
+  .row { display: flex; gap: 8px; align-items: baseline; margin: 8px 0; }
+  label { font-weight: bold; white-space: nowrap; }
+  input[type=text], input[type=date], textarea { border: 0; border-bottom: 1px solid #333; padding: 3px 2px; font: inherit; background: transparent; min-width: 0; }
+  input[type=text]:focus, input[type=date]:focus, textarea:focus { outline: 1px solid #2e75b6; background: #eef6ff; }
+  .grow { flex: 1; width: 100%; }
+  .half { flex: 1; }
+  .section-title { margin: 16px 0 7px; font-weight: bold; }
+  .note { font-size: 9pt; line-height: 1.25; margin: 6px 0 10px; }
+  table { border-collapse: collapse; width: 100%; margin: 7px 0 12px; }
+  th, td { border: 1px solid #333; padding: 5px; height: 27px; }
+  th { text-align: left; }
+  td input { width: 100%; border: 0; font: inherit; }
+  .question { margin: 9px 0; line-height: 1.3; }
+  .question label:first-child { display: inline; white-space: normal; }
+  .choice { margin-left: 12px; white-space: nowrap; font-weight: normal; }
+  .choice input { vertical-align: middle; }
+  .declaration { margin-top: 18px; line-height: 1.35; text-align: justify; }
+  .date-sign { display: flex; justify-content: space-between; align-items: end; margin-top: 28px; gap: 20px; }
+  .sign { text-align: center; width: 55%; }
+  .signline { border-bottom: 1px solid #222; height: 22px; }
+  .small { font-size: 9pt; }
+  @media print {
+    body { background: white; font-size: 10.5pt; }
+    .toolbar { display: none; }
+    main { margin: 0; padding: 0; width: auto; min-height: auto; box-shadow: none; }
+    input, textarea { color: #000; }
+  }
+</style>
+</head>
+<body>
+<div class="toolbar">
+  <button class="primary" onclick="window.print()">Nyomtatás</button>
+  <button class="primary" id="submitBtn" onclick="submitToGoogle()">BEKÜLDÉS</button>
+  <span class="status" id="status"></span>
+</div>
+
+<main id="adatlap">
+  <h1>KAROLINA ISKOLA</h1>
+  <h2>ADATLAP<br><span class="small">2026/2027. TANÉVRE</span></h2>
+
+  <div class="row"><label for="studentName">TANULÓ NEVE:</label><input id="studentName" name="studentName" class="grow" type="text"><label for="className">Osztálya:</label><input id="className" name="className" style="width:95px" type="text"></div>
+  <div class="row"><label for="address">Állandó lakcíme:</label><input id="address" name="address" class="grow" type="text"></div>
+  <div class="row"><label for="birth">Születési helye, ideje:</label><input id="birth" name="birth" class="half" type="text"><label for="mother">Anyja neve:</label><input id="mother" name="mother" class="half" type="text"></div>
+  <div class="row"><label for="taj">TAJ száma:</label><input id="taj" name="taj" class="grow" type="text"></div>
+  <div class="row"><label for="parentContact">Szülők e-mail címe, telefonszáma:</label><input id="parentContact" name="parentContact" class="grow" type="text"></div>
+  <div class="row"><input id="parentContact2" name="parentContact2" class="grow" type="text"></div>
+  <div class="row"><label for="eduId">A tanuló oktatási azonosító száma (diákigazolványon is megtalálható):</label><input id="eduId" name="eduId" class="grow" type="text"></div>
+
+  <div class="section-title">A családban eltartott gyermekek 2026. szeptember 1-én, beleértve azt a tanulót, akire az adatlapot tölti:</div>
+  <table>
+    <thead><tr><th>Név</th><th>Oktatási intézménye</th></tr></thead>
+    <tbody>
+      <tr><td><input name="child1Name" type="text"></td><td><input name="child1School" type="text"></td></tr>
+      <tr><td><input name="child2Name" type="text"></td><td><input name="child2School" type="text"></td></tr>
+      <tr><td><input name="child3Name" type="text"></td><td><input name="child3School" type="text"></td></tr>
+      <tr><td><input name="child4Name" type="text"></td><td><input name="child4School" type="text"></td></tr>
+    </tbody>
+  </table>
+  <p class="note"><i>Egyetemi, főiskolai hallgatói jogviszonyról az igazolásokat (egyéb, általános) legkésőbb október 15-ig kérjük leadni.</i></p>
+
+  <div class="question"><label>Családjában három vagy több gyereket nevel?</label><span class="choice"><input type="radio" name="threeChildren" value="Igen"> Igen</span> - <span class="choice"><input type="radio" name="threeChildren" value="Nem"> Nem</span></div>
+  <p class="note">(Figyelembe veendő gyermekek köre: Az egy lakásban együtt lakó, ott bejelentett lakóhellyel vagy tartózkodási hellyel rendelkező 18 éven aluli gyermek; a 25 évesnél fiatalabb, köznevelési intézményben nappali rendszerű iskolai oktatásban részt vevő, a nappali oktatás munkarendje szerint szervezett felnőttoktatásban részt vevő vagy felsőoktatási intézményben nappali képzésben tanuló gyermek és életkortól függetlenül a tartósan beteg vagy súlyos fogyatékos gyermek, kivéve a nevelőszülőnél ideiglenes hatállyal elhelyezett gyermek, valamint a nevelőszülőnél elhelyezett nevelésbe vett gyermek és utógondozói ellátásban részesülő fiatal felnőtt.)</p>
+
+  <div class="question"><label>Rendszeres gyermekvédelmi kedvezményt kap-e?</label><span class="choice"><input type="radio" name="childBenefit" value="Igen"> Igen</span> - <span class="choice"><input type="radio" name="childBenefit" value="Nem"> Nem</span></div>
+  <p class="note"><i>Az önkormányzati határozatot kérjük mellékelni.</i></p>
+  <div class="question"><label>Tartósan beteg vagy fogyatékos a gyermek?</label><span class="choice"><input type="radio" name="disabled" value="Igen"> Igen</span> - <span class="choice"><input type="radio" name="disabled" value="Nem"> Nem</span></div>
+  <p class="note"><i>Szakorvosi igazolást kérjük mellékelni.</i></p>
+  <div class="question"><label>Sajátos Nevelési Igényű (SNI)?</label><span class="choice"><input type="radio" name="sni" value="Igen"> Igen</span> - <span class="choice"><input type="radio" name="sni" value="Nem"> Nem</span></div>
+  <p class="note"><i>A nyilatkozaton a „b) tartósan beteg vagy fogyatékos” pontot kérjük jelölni.</i></p>
+  <div class="question"><label>Nevelésbe vételét rendelte el a gyámhatóság / utógondozói ellátásban részesül?</label><span class="choice"><input type="radio" name="fosterCare" value="Igen"> Igen</span> - <span class="choice"><input type="radio" name="fosterCare" value="Nem"> Nem</span></div>
+  <p class="note"><i>Igazolást a nevelésbe vételről vagy utógondozásról kérjük mellékelni.</i></p>
+  <p class="note"><b>Amennyiben a fenti kérdések valamelyikére a válasz igen, kérjük, töltse ki a csatolt Nyilatkozatot a kedvezményes intézményi gyerekétkeztetés igénybe vételéhez.</b></p>
+  <div class="question"><label>Diétás étrend biztosítását kéri a gyermek számára?</label><span class="choice"><input type="radio" name="diet" value="Igen"> Igen</span> - <span class="choice"><input type="radio" name="diet" value="Nem"> Nem</span></div>
+  <p class="note"><i>Gasztroenterológus szakorvosi véleményét kérjük mellékelni.</i></p>
+
+  <p class="declaration">Büntetőjogi felelősségem tudatában kijelentem, hogy a közölt adatok a valóságnak megfelelnek. Továbbá tudomásul veszem, ha változás történik a jogosultságomban a tanév során, saját felelősségem jelezni az intézmény felé.</p>
+  <div class="date-sign"><div>Szeged, 2026. 08. 31.</div><div class="sign"><div class="signline"></div><div class="small">szülő/gondviselő aláírása</div></div></div>
+</main>
+
+<script>
+// --- KONFIGURÁCIÓ: ide írd be a Google Apps Script webalkalmazás URL-jét ---
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/exec';
+
+function getFormData() {
+  const data = {};
+  const controls = document.querySelectorAll('input, textarea, select');
+  controls.forEach((el, i) => {
+    const key = el.name || `control_${i}`;
+    if (el.type === 'radio') {
+      if (el.checked) data[key] = el.value;
+    } else if (el.type === 'checkbox') {
+      if (el.checked) data[key] = el.value || true;
+    } else {
+      data[key] = el.value;
+    }
+  });
+  return data;
+}
+
+async function submitToGoogle() {
+  const btn = document.getElementById('submitBtn');
+  const status = document.getElementById('status');
+  const data = getFormData();
+
+  if (!data.studentName || !data.studentName.trim()) {
+    alert('Kérlek, add meg a tanuló nevét a beküldés előtt.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Küldés...';
+  status.textContent = 'Adatok küldése a Google Táblázatba...';
+
+  try {
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    // no-cors esetén a válasz nem olvasható részletesen, de a kérés elküldésre kerül
+    status.textContent = 'Sikeres beküldés: ' + new Date().toLocaleTimeString('hu-HU');
+    alert('Az adatlap sikeresen elküldve a Google Táblázatba.');
+  } catch (err) {
+    console.error(err);
+    status.textContent = 'Hiba a beküldés során.';
+    alert('Hiba történt a beküldés során. Kérlek, próbáld meg később.');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'BEKÜLDÉS';
+  }
+}
+</script>
+</body>
+</html>
